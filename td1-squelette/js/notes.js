@@ -1,90 +1,80 @@
-//Note
-class Notes{
-    constructor(titre, contenu) {
-        this.titre = titre;
-        this.contenu = contenu;
-        this.date_creation = new Date();
-    }
-
-    setTitre(t){
-        this.titre = t;
-    }
-
-    setContenu(c) {
-        this.contenu = c;
-    }
+function Note(title, content, dateCreation = new Date()) {
+    this.title = title;
+    this.content = content;
+    this.dateCreation = dateCreation;
 }
 
-//NoteView
-class NoteView{
+Note.prototype.setTitle = function (title) {
+    this.title = title;
+};
+
+Note.prototype.setContent = function (content) {
+    this.content = content;
+};
+
+class NoteView {
     constructor(note) {
         this.note = note;
     }
 
-    convert(){
-        let text = `# ${this.note.titre}
-        ### ${this.note.date_creation.toLocaleDateString()}
-        ${this.note.contenu}`;
+    convert() {
+        let text = `# ${this.note.title}
+### ${this.note.dateCreation.toLocaleDateString()}
+${this.note.content}`;
         let conv = new showdown.Converter();
         return conv.makeHtml(text);
     }
 
     display() {
-        document.querySelector(`#currentNoteView`).innerHTML = this.convert(
+        document.querySelector("#currentNoteView").innerHTML = this.convert(
             this.note
         );
     }
 }
 
-//NoteFormView
-let noteFormView = {
-    display(){
-        document.querySelector('#noteForm').classList.remove('#create_edit_note-hidden');
+const noteFormView = {
+    display() {
+        document
+            .getElementById("noteForm")
+            .classList.remove("create_edit_note-hidden");
     },
-
-    hide(){
-        document.querySelector('#noteForm').classList.add('#create_edit_note-hidden');
+    hide() {
+        document
+            .getElementById("noteForm")
+            .classList.add("create_edit_note-hidden");
     },
+    validate() {
+        let titre = document.querySelector("#form_add_note_title").value,
+            contenu = document.querySelector("#form_add_note_text").value;
 
-    validate(){
-        document.querySelector('#form_add_note_valid').addEventListener("click", (event) => {
-            const titreInput = document.querySelector('#form_add_note_title').innerHTML;
-            const contenuInput = document.querySelector('#form_add_note_text').innerHTML;
-
-            const note = new Notes(titreInput, contenuInput);
-
-            const noteView = new NoteView(note);
-            noteView.display();
-        });
-    }
-}
-
-let mainMenuView = {
+        noteapp.currentNote = new Note(titre, contenu);
+        let noteView = new NoteView(noteapp.currentNote);
+        noteView.display();
+        noteFormView.hide();
+    },
     init() {
-        document.querySelector('#add').addEventListener('click', () => {
-            this.noteFormView.display();
-        });
-    }
-}
-
-let appState = {
-    currentNote: null, // Variable pour stocker la note courante.
-
-    setCurrentNote(note) {
-        this.currentNote = note;
+        let validate_button = document.querySelector("#form_add_note_valid");
+        validate_button.addEventListener("click", noteFormView.validate);
     },
-
-    getCurrentNote() {
-        return this.currentNote;
-    },
-
-    init() {
-        noteFormView.validate();
-
-        mainMenuView.init();
-    }
 };
 
-window.addEventListener('load', () => {
-    appState.init(); // Lance l'application.
-});
+const mainMenuView = {
+    addHandler(event) {
+        noteFormView.display();
+    },
+    init() {
+        document
+            .getElementById("add")
+            .addEventListener("click", this.addHandler);
+    },
+};
+
+let noteapp = {
+    currentNote: null,
+    init: function () {
+        mainMenuView.init();
+        noteFormView.init();
+    },
+};
+
+window.addEventListener("load", noteapp.init);
