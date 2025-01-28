@@ -1,0 +1,7 @@
+*.iml
+out/
+.idea/
+mywishlist/conf/conf.ini
+db.conf.ini
+/src/conf/
+td2/js/DS_Store
