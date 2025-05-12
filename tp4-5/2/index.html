@@ -10,6 +10,8 @@
 <h2>Les 10 livres de la collection</h2>
 <!-- Conteneur pour les résultats -->
 <div id="books-container"></div>
+<hr>
+<div id="global-details-container"></div>
 
 <!-- Template Handlebars -->
 <script id="books-template" type="text/x-handlebars-template">
@@ -18,8 +20,7 @@
         <ul>
             <li>
                 {{inc @index}}. <strong>{{name}}</strong> (sortie : {{released}})
-                <button data-index="{{@index}}">Détails</button>
-                <div class="details" id="details-{{@index}}"></div>
+                <button class="btn-details" data-index="{{@index}}">Détails</button>
             </li>
         </ul>
     </div>
