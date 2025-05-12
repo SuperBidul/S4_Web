@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <title>Liste des Livres - Ice and Fire</title>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .book { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-    </style>
 </head>
 <body>
-<h1>Liste des Livres (API Ice and Fire)</h1>
-
+<h1>Ice and Fire books</h1>
+<h2>Les 10 livres de la collection</h2>
 <!-- Conteneur pour les résultats -->
 <div id="books-container"></div>
 
@@ -19,11 +15,13 @@
 <script id="books-template" type="text/x-handlebars-template">
     {{#each books}}
     <div class="book">
-        <h2>{{name}}</h2>
-        <p><strong>ISBN :</strong> {{isbn}}</p>
-        <p><strong>Nombre de pages :</strong> {{numberOfPages}}</p>
-        <p><strong>Auteurs :</strong> {{authors}}</p>
-        <p><strong>Date de sortie :</strong> {{released}}</p>
+        <ul>
+            <li>
+                {{inc @index}}. <strong>{{name}}</strong> (sortie : {{released}})
+                <button data-index="{{@index}}">Détails</button>
+                <div class="details" id="details-{{@index}}"></div>
+            </li>
+        </ul>
     </div>
     {{/each}}
 </script>
